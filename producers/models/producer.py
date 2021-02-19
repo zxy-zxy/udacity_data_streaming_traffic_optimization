@@ -72,7 +72,7 @@ class Producer:
                 logger.error(f"Error text: {e}.")
 
     def close(self):
-        if self.producer is not None:
+        if self.producer:
             logger.debug(f"Closing producer {self.topic_name}.")
             self.producer.flush()
 
