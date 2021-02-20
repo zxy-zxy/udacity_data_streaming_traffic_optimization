@@ -88,10 +88,15 @@ class Weather(Producer):
                 headers=headers,
                 data=serialized_data,
             )
-            resp.raise_for_status()
         except requests.RequestException as e:
-            logging.error(f"Error occurred while sending data to REST Proxy {REST_PROXY_URL}.")
-            logging.error(f"Error text: {e}.")
+            logger.error(f"Error occurred while sending data to REST Proxy {REST_PROXY_URL}.")
+            logger.error(f"Error text: {e}.")
+            return
+
+        try:
+            resp.raise_for_status()
+        except requests.RequestException:
+            logger.error(f"Error response received from server: {resp.json()}")
 
         logger.debug(
             "sent weather data to kafka, temp: %s, status: %s",

@@ -41,6 +41,11 @@ class KafkaConsumer:
         else:
             self.consumer = Consumer(self.broker_properties)
 
+        if self.offset_earliest:
+            self.broker_properties["default.topic.config"] = {
+                "auto.offset.reset": "earliest"
+            }
+
         self.consumer.subscribe([self.topic_name_pattern], on_assign=self.on_assign)
 
     def on_assign(self, consumer, partitions):

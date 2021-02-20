@@ -35,16 +35,18 @@ class Turnstile(Producer):
         """Simulates riders entering through the turnstile."""
         num_entries = self.turnstile_hardware.get_entries(timestamp, time_step)
 
-        key = {"timestamp": self.time_millis()}
+        for _ in range(num_entries):
 
-        value = {
-            "station_id": self.station.station_id,
-            "station_name": self.station.name,
-            "line": self.station.color.name,
-        }
+            key = {"timestamp": self.time_millis()}
 
-        self.producer.produce(
-            topic=self.topic_name,
-            key=key,
-            value=value,
-        )
+            value = {
+                "station_id": self.station.station_id,
+                "station_name": self.station.name,
+                "line": self.station.color.name,
+            }
+
+            self.producer.produce(
+                topic=self.topic_name,
+                key=key,
+                value=value,
+            )
